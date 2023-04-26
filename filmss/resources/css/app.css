@@ -1,0 +1,14 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+@font-face {
+    font-family: 'MiFuente';
+    src: url('../../public/fonts/TenorSans-Regular.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+#inputBuscador::placeholder::before {
+    font-family: "Font Awesome 5 Free";
+    content: "\f002";
+    margin-right: 0.5rem;
+}

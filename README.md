@@ -34,9 +34,9 @@ castellà o valencià. (200-400 paraules)
 
          Para esta tabla hemos decidido guardar el contenido que se va ha valorar, comno es logico la valoracion y atraves de una Clave ajena el usuario que ha realizado tal valoracion. La Clave primaria estara compuesta del id del usario y del contenido, asi conseguimos que un uasuario solo pueda valorar el contenido una vez.                <image src="BD/valoraciones.PNG" alt="USERS">
       
-      - **Puntuaciones:** Para nuestra web hemos pensado guardar las valoraciones de los contenidos multimedia que consigamos de la API. Con esta entidad conseguimos que los usuarios nos digan que es lo que mas les gusta y ademas conseguimos crear una comunidad, ya quesolo los usuarios de nuestra web podran valorarlas.
+      - **Puntuaciones:** Un apartado que ofreceremos en nuestra web es el de los juegos, en el que añadiremos distintos juegos sobre peliculas, series...  Por lo tanto esta entidad consiste en las puntuaciones 
 
-         Para esta tabla hemos decidido guardar el contenido que se va ha valorar, comno es logico la valoracion y atraves de una Clave ajena el usuario que ha realizado tal valoracion. La Clave primaria estara compuesta del id del usario y del contenido, asi conseguimos que un uasuario solo pueda valorar el contenido una vez.                <image src="BD/valoraciones.PNG" alt="USERS">
+         Para esta tabla hemos decidido guardar el contenido que se va ha valorar, comno es logico la valoracion y atraves de una Clave ajena el usuario que ha realizado tal valoracion. La Clave primaria estara compuesta del id del usario y del contenido, asi conseguimos que un uasuario solo pueda valorar el contenido una vez.                <image src="BD/rankings.PNG" alt="USERS">
 
    * b. Diseny dels objectes.
         * i. Diagrames de clases, amb les clases i els atributs.
