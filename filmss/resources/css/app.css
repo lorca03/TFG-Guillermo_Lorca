@@ -12,3 +12,25 @@
     content: "\f002";
     margin-right: 0.5rem;
 }
+.active{
+    color: #ecb42d;
+}
+.botonJuego:hover{
+    box-shadow:0px 4px 4px #012b29;
+}
+.activePerfil{
+    color: #FFFFFF;
+    border-bottom: 2px solid #FFFFFF;
+    font-weight: bold;
+    text-shadow: 0px 1px 2px #FFFFFF;
+}
+ .noActivePerfil{
+     color: #ecb42d; text-shadow: 0px 4px 4px #012b29;
+ }
+.inputCuenta{
+    border: 2px solid #ecb42d; box-shadow: 0px 4px 4px #012b29; color: #FFFFFF;width: 55%;min-width: 300px;
+}
+.titulo{
+    height: 100px; width: 450px; transform: translateY(-50%);
+    background-color:rgb(31,68,66,0.95) ;
+}

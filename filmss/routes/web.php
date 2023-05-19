@@ -1,5 +1,9 @@
 <?php
 
+use App\Http\Controllers\ApiController;
+use App\Http\Controllers\ContenidoController;
+use App\Http\Controllers\ImagenAleatoriaController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -12,10 +16,32 @@ use Illuminate\Support\Facades\Route;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
+Route::middleware(['auth'])->group(function () {
+    Route::get('/perfil', function () {
+        return view('pages.perfil');
+    })->name('perfil');
+});
 
-Route::get('/', function () {
-    return view('pages.home');
+Route::get('/',  [ApiController::class,'home']);
+Route::post('/pelicula/{slug}',  [ContenidoController::class,'contenido'])->name('movie');
+Route::post('/serie/{slug}',  [ContenidoController::class,'contenido'])->name('tv');
+Route::post('/person/{slug}',  [ContenidoController::class,'contenido'])->name('person');
+Route::get('/obtenerMasResultados',  [ApiController::class,'obtenerMasResultados'])->name('obtenerMasResultados');
+Route::get('/buscar', [ApiController::class,'search'])->name('explorar.home');
+Route::get('/tendencias', [ImagenAleatoriaController::class,'tendencias']);
+Route::get('/watchlist', function () {
+    return view('pages.watchlist');
 });
-Route::get('/tendencias', function () {
-    return view('pages.tendencias');
+Route::get('/login', function () {
+    return view('pages.login');
+})->name('login');
+Route::get('/sign_up', function () {
+    return view('pages.sign_up');
 });
+Route::post('/validar-registro',[UserController::class,'register'])->name('registro');
+Route::post('/iniciar-sesion', [UserController::class,'login'])->name('inicio.sesion');
+Route::get('/logout',[UserController::class,'logout'])->name('logout');
+Route::get('/juegos', function () {
+    return view('pages.juegos');
+});
+

@@ -1,5 +1,9 @@
 .l_homeF{
-    text-shadow: -1px -1px 0 #ecb42d, 1px -1px 0 #ecb42d, -1px 1px 0 #ecb42d, 1px 1px 0 #ecb42d;
+    -webkit-text-stroke: 1px #ecb42d; text-stroke: 1px #ecb42d;
+}
+.enlaces_Home{
+    -webkit-text-stroke: 0.5px #ecb42d;
+    text-stroke: 0.5px #ecb42d;
 }
 ul.l_homeF li:not(:last-child)::after {
     content: "|";
@@ -12,6 +16,9 @@ ul.l_homeF li:not(:last-child)::after {
     border-radius: 50px;
     font-size: 25px;
     border: 2px solid #ecb42d;
+
+}
+.filtroModal:hover{
     text-shadow: 0px 4px 4px #ecb42d;
 }
 #inputBuscador:focus{

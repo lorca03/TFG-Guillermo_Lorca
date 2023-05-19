@@ -13,16 +13,23 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe" crossorigin="anonymous"></script>
     <!--Sytle-->
     <link rel="stylesheet" href="{{ asset('css/home.css') }}">
+    <!--JQuery-->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <title>FILMSS - @yield('title')</title>
 </head>
 <body class="font-sans">
-
-@include("layouts.nav")
+@if(!Str::contains($_SERVER["REQUEST_URI"],['/login','/sign_up']))
+    @include("layouts.nav")
+@endif
 
 @yield('contenido','No hay nada')
 
-@include("layouts.footer")
+@if(!Str::contains($_SERVER["REQUEST_URI"],['/login','/sign_up','/juegos','/perfil','/buscar','/person']))
+    @include("layouts.footer")
+@endif
+
 
 <!--Scripts-->
 @vite('resources/js/footer.js')

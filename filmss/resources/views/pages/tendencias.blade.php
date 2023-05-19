@@ -1,11 +1,12 @@
 @extends('layouts.master')
-@section('title') Tendencias @endsection
+@section('title') TENDENCIAS @endsection
 @section('contenido')
 
-    <div class="w-100 h-[500px] flex justify-center flex-col align-items-center bg-center bg-cover bg-no-repeat" style="background-image:linear-gradient(rgb(1,43,41,0.6),rgb(1,43,41,0.5)),url('{{ asset("images/tendenciasAmigos2.jpg") }}');">
-        <div class="titulo flex flex-col justify-center align-items-center text-yellow text-[65px]">
-            <img class="mb-[-10px] w-26 h-20" src="{{ asset('images/logo_rollo.png') }}" alt="Logo">FILMSS</div>
-        <div class="container flex justify-center align-items-center">
+    <div class="w-100 h-[500px] flex justify-center flex-col align-items-center bg-center bg-cover bg-no-repeat"
+         style="background-image:linear-gradient(rgb(1,43,41,0.6),rgb(1,43,41,0.5)),url('{{ $imagen_aleatoria }}');">
+        <div class="titulo text-center bg-transparent text-yellow text-[72px]" style="-webkit-text-stroke: 1px white; text-stroke: 1px white;">
+            FILMSS</div>
+        <div class="container flex justify-center text-[18px] align-items-center">
             <p class="text-blanco text-center">¡¡Descubre lo último y más popular!!<br>
                 Mantente al día con las últimas tendencias <br>
                 y descubre lo que todo el mundo está viendo</p>
