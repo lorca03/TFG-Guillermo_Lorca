@@ -16,11 +16,73 @@
     <div class=" bg-green w-100 h-[1000px]" id="tendencias">
         <div class="container pt-[45px] flex justify-center text-[38px] align-items-center text-blanco">
             Tendencias <img class="ml-[8px] w-14 h-16" src="{{ asset('images/Fuego.png') }}" alt="fuegito"></div>
-        <div class="container flex text-[38px] align-items-center pt-[45px] text-blanco" id="peliculas">
-            Peliculas<img class="ml-[8px] w-16 h-16" src="{{ asset('images/Claqueta.png') }}" alt="fuegito">
+        <div class="container flex flex-col text-[38px] align-items-start pt-[45px] text-blanco" id="peliculas">
+            <div class="flex">Peliculas<img class="ml-[8px] w-16 h-16" src="{{ asset('images/Claqueta.png') }}" alt="fuegito"></div>
+            <div id="carouselPelisControls" class="carousel slide mt-3">
+                <div class="carousel-inner">
+                    @php
+                        $chunks = array_chunk($peliculas, 5);
+                        $totalChunks = count($chunks);
+                    @endphp
+
+                    @foreach($chunks as $index => $chunk)
+                        <div class="carousel-item {{$index === 0 ? 'active' : ''}}">
+                            <div class="row flex align-items-center justify-center">
+                                @foreach($chunk as $pelicula)
+                                    <div class="col-md-2">
+                                        <img src="https://image.tmdb.org/t/p/original/{{ $pelicula['poster_path'] }}"
+                                             class="w-[300px] rounded-[10px]" alt="{{$pelicula['title']}}">
+                                    </div>
+                                @endforeach
+                            </div>
+                        </div>
+                    @endforeach
+                </div>
+
+                <button class="carousel-control-prev {{$totalChunks == 1 ? 'd-none' : ''}}" type="button" data-bs-target="#carouselPelisControls" data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Previous</span>
+                </button>
+                <button class="carousel-control-next {{$totalChunks == 1 ? 'd-none' : ''}}" type="button" data-bs-target="#carouselPelisControls" data-bs-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Next</span>
+                </button>
+            </div>
         </div>
-        <div class="container flex text-[38px] align-items-center pt-[45px] text-blanco" id="peliculas">
-            Series<img class="ml-[8px] w-18 h-12" src="{{ asset('images/FotoVideo.png') }}" alt="fuegito">
+        <div class="container flex flex-col text-[38px] align-items-start pt-[45px] text-blanco" id="peliculas">
+            <div class="flex">Series<img class="ml-[8px] w-18 h-12" src="{{ asset('images/FotoVideo.png') }}" alt="fuegito"></div>
+            <div id="carouselSeriesControls" class="carousel slide mt-3">
+                <div class="carousel-inner">
+                    @php
+                        $chunks = array_chunk($series, 5);
+                        $totalChunksS = count($chunks);
+                    @endphp
+
+                    @foreach($chunks as $index => $chunk)
+                        <div class="carousel-item {{$index === 0 ? 'active' : ''}}">
+                            <div class="row flex align-items-center justify-center">
+                                @foreach($chunk as $serie)
+                                    <div class="col-md-2">
+                                        <img src="https://image.tmdb.org/t/p/original/{{ $serie['poster_path'] }}"
+                                             class="w-[300px] rounded-[10px]" alt="{{$serie['name']}}">
+                                    </div>
+                                @endforeach
+                            </div>
+                        </div>
+                    @endforeach
+                </div>
+
+                <button class="carousel-control-prev {{$totalChunksS == 1 ? 'd-none' : ''}}" type="button" data-bs-target="#carouselSeriesControls" data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Previous</span>
+                </button>
+                <button class="carousel-control-next {{$totalChunksS == 1 ? 'd-none' : ''}}" type="button" data-bs-target="#carouselSeriesControls" data-bs-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Next</span>
+                </button>
+            </div>
         </div>
     </div>
+    <script>
+    </script>
 @endsection

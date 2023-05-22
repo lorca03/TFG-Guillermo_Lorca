@@ -9,6 +9,12 @@ use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
+    /**
+     * Registra a un usuario en la base de datos.
+     *
+     * @param  Request  $request  Datos del usuario.
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function register(Request $request)
     {
         $user = new User();
@@ -17,22 +23,33 @@ class UserController extends Controller
         $user->password = encrypt($request->input('password'));
         $user->save();
         Auth::login($user);
-        return redirect(route('perfil'));
+        return redirect(route('/'));
     }
+    /**
+     * Realiza el inicio de sesión del usuario.
+     *
+     * @param  Request  $request  Datos del usuario.
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function login(Request $request)
     {
         $credentials = [
             "email" => $request->input('email'),
             "password" => $request->input('password')
         ];
-//        $remember
         if (Auth::attempt($credentials,true)){
             $request->session()->regenerate();
-            return redirect()->intended(route('perfil'));
+            return redirect('/');
         }else{
             return redirect('login');
         }
     }
+    /**
+     * Cierra la sesión del usuario conectado.
+     *
+     * @param  Request  $request  Datos del usuario.
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function logout(Request $request)
     {
         Auth::logout();

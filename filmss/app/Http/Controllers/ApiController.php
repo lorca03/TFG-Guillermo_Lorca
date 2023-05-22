@@ -9,6 +9,7 @@ class ApiController extends Controller
 {
     var $cliente;
     var $config;
+    var $headers;
 
     function __construct()
     {
@@ -18,6 +19,10 @@ class ApiController extends Controller
             'adult' => '&include_adult=false',
             'language' => '&language=es',
             'region' => '&region=ES&watch_region=ES',
+        ];
+        $this->headers = [
+            'Authorization' => 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJmZDRmNDE2NWI0N2YzNDkyZGNmMDE3MWJjMGZkYWQ4MyIsInN1YiI6IjY0NWJkNDc2NmFhOGUwMDBlNGJlMzU4NiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.yzENA_sZUyHmedM3zgZFWMMae4JvCzKszp9Xjh-GqrA',
+            'accept' => 'application/json',
         ];
     }
 
@@ -40,10 +45,7 @@ class ApiController extends Controller
         $apiUrl = 'https://api.themoviedb.org/3/search/' . $opcionesFiltrar[$filtrar] . '?query=' . $busqueda . '&include_adult=false&language=es&watch_region=es&page=';
         do {
             $response = $this->cliente->request('GET', $apiUrl . $pages, [
-                'headers' => [
-                    'Authorization' => 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJmZDRmNDE2NWI0N2YzNDkyZGNmMDE3MWJjMGZkYWQ4MyIsInN1YiI6IjY0NWJkNDc2NmFhOGUwMDBlNGJlMzU4NiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.yzENA_sZUyHmedM3zgZFWMMae4JvCzKszp9Xjh-GqrA',
-                    'accept' => 'application/json',
-                ],
+                'headers' => $this->headers,
             ]);
             $responseData = json_decode($response->getBody(), true);
             foreach ($responseData['results'] as $result) {
@@ -91,10 +93,7 @@ class ApiController extends Controller
         $apiUrl = 'https://api.themoviedb.org/3/discover/movie?&primary_release_date.lte=' . $config['date']
             . $config['adult'] . $config['language'] . $config['region'];
         $response = $this->cliente->request('GET', $apiUrl . '&page=' . $pages, [
-            'headers' => [
-                'Authorization' => 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJmZDRmNDE2NWI0N2YzNDkyZGNmMDE3MWJjMGZkYWQ4MyIsInN1YiI6IjY0NWJkNDc2NmFhOGUwMDBlNGJlMzU4NiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.yzENA_sZUyHmedM3zgZFWMMae4JvCzKszp9Xjh-GqrA',
-                'accept' => 'application/json',
-            ],
+            'headers' => $this->headers,
         ]);
         $responseData = json_decode($response->getBody(), true);
         foreach ($responseData['results'] as $result) {
@@ -110,10 +109,7 @@ class ApiController extends Controller
         $apiUrl = 'https://api.themoviedb.org/3/discover/tv?&first_air_date.lte=' . $config['date'] . '&with_origin_country=US'
             . $config['adult'] . $config['language'] . $config['region'];
         $response = $this->cliente->request('GET', $apiUrl . '&page=' . $pages, [
-            'headers' => [
-                'Authorization' => 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJmZDRmNDE2NWI0N2YzNDkyZGNmMDE3MWJjMGZkYWQ4MyIsInN1YiI6IjY0NWJkNDc2NmFhOGUwMDBlNGJlMzU4NiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.yzENA_sZUyHmedM3zgZFWMMae4JvCzKszp9Xjh-GqrA',
-                'accept' => 'application/json',
-            ],
+            'headers' => $this->headers,
         ]);
         $responseData = json_decode($response->getBody(), true);
         foreach ($responseData['results'] as $result) {
@@ -127,19 +123,44 @@ class ApiController extends Controller
     public function consulta($url)
     {
         $response = $this->cliente->request('GET', $url , [
-            'headers' => [
-                'Authorization' => 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJmZDRmNDE2NWI0N2YzNDkyZGNmMDE3MWJjMGZkYWQ4MyIsInN1YiI6IjY0NWJkNDc2NmFhOGUwMDBlNGJlMzU4NiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.yzENA_sZUyHmedM3zgZFWMMae4JvCzKszp9Xjh-GqrA',
-                'accept' => 'application/json',
-            ],
+            'headers' => $this->headers,
         ]);
         return json_decode($response->getBody(), true);
     }
     /**
-     * Store a newly created resource in storage.
+     * Busacmos las peliculas y series tendencia
      */
-    public function store(Request $request)
+    public function tendencias(Request $request)
     {
-        //
+        $apiUrl = 'https://api.themoviedb.org/3/trending/movie/week?'. $this->config['language'];
+        $response = $this->cliente->request('GET', $apiUrl, [
+            'headers' => $this->headers,
+        ]);
+        $responseData = json_decode($response->getBody(), true);
+        $movies = $responseData['results'];
+        // Ordenar las películas por popularidad en orden descendente
+        usort($movies, function ($a, $b) {
+            return $b['popularity'] <=> $a['popularity'];
+        });
+        $apiUrl = 'https://api.themoviedb.org/3/trending/tv/week?'. $this->config['language'];
+        $response = $this->cliente->request('GET', $apiUrl, [
+            'headers' => $this->headers,
+        ]);
+        $responseDataS = json_decode($response->getBody(), true);
+        $series = $responseDataS['results'];
+        // Ordenar las películas por popularidad en orden descendente
+        usort($series, function ($a, $b) {
+            return $b['popularity'] <=> $a['popularity'];
+        });
+        // Obtener las primeras 10 películas más populares
+        $topMovies = array_slice($movies, 0, 10);
+        $topSeries = array_slice($series, 0, 10);
+//        var_dump($topMovies);
+//        echo '<br />';
+//        var_dump($topSeries);
+        return view('/pages.tendencias', ['imagen_aleatoria' => ImagenAleatoriaController::tendencias(),
+            'peliculas'=>$topMovies,
+            'series'=>$topSeries,]);
     }
 
     /**

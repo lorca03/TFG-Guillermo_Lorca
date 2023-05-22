@@ -8,6 +8,8 @@
       <sourceFolder url="file://$MODULE_DIR$/filmss/tests" isTestSource="true" packagePrefix="Tests\" />
       <sourceFolder url="file://$MODULE_DIR$/spec" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/tests" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/filmss/app/Models" isTestSource="false" packagePrefix="App\Models\" />
+      <sourceFolder url="file://$MODULE_DIR$/filmss/app/Utils" isTestSource="false" packagePrefix="App\Utils\" />
       <excludeFolder url="file://$MODULE_DIR$/filmss/vendor/laravel/ui" />
     </content>
     <orderEntry type="inheritedJdk" />

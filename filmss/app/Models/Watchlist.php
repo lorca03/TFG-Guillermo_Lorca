@@ -13,4 +13,8 @@ class Watchlist extends Model
     {
         return $this->belongsTo(User::class,'user_id');
     }
+    public function registros($id)
+    {
+        return $this->where('user_id',$id)->get();
+    }
 }

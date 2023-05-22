@@ -63,8 +63,28 @@
                     <div class="col poster flex flex-col">
                         <img src="https://image.tmdb.org/t/p/w400/{{ $datos['poster_path'] }}"
                              class="rounded-t-[10px] w-[350px] h-[500px]">
-                        <div class="acciones bg-green2 rounded-b-[10px] w-[350px] h-[80px]">
-
+                        <div class="acciones bg-green2 text-yellow rounded-b-[10px] w-[350px] h-[80px]">
+                            <div class="row h-[80px]">
+                                <div class="col flex flex-col align-items-center justify-center">
+                                    <form method="POST" action="{{route('guardarContenido')}}">
+                                        @csrf
+                                        <input type="hidden" name="contenido" value="{{$tipo}}/{{$datos['id']}}">
+                                        <button type="submit" class="flex flex-col justify-center align-items-center">
+                                            <img class="w-[25px]" src="{{asset('images/watchlist/guardar.png')}}" alt="Guardar">
+                                            Watchlist</button>
+                                    </form>
+                                </div>
+                                <div class="col flex flex-col align-items-center justify-center">
+                                    <button type="submit" class="flex flex-col justify-center align-items-center">
+                                        <img class="w-[40px]" src="{{asset('images/logo_rolloAmarillo.png')}}" alt="Guardar">
+                                        Valorar</button>
+                                </div>
+                                <div class="col flex flex-col align-items-center justify-center">
+                                    <button type="submit" class="flex flex-col justify-center align-items-center">
+                                        <img class="w-[25px]" src="{{asset('images/comentario.png')}}" alt="Guardar">
+                                        Comentar</button>
+                                </div>
+                            </div>
                         </div>
                         <div class="sinopsis mt-4 text-center text-blanco w-[350px]">
                             @if($datos['tagline']!="")

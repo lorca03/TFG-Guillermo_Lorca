@@ -23,7 +23,6 @@ class ContenidoController extends Controller
         $apiUrl = 'https://api.themoviedb.org/3/' . $tipo . '/' . $id . '/credits?language=es';
         $responseCredits = $this->apiController->consulta($apiUrl);
         if ($tipo!='person'){
-
             $apiUrl = 'https://api.themoviedb.org/3/' . $tipo . '/' . $id . '/watch/providers';
             $responsePlataforms = $this->apiController->consulta($apiUrl);
             $dates=$tipo=='movie'?'release_dates':'content_ratings';
@@ -60,7 +59,6 @@ class ContenidoController extends Controller
                     'certificacion'=>$certificacion
                 ]);
         }
-//        var_dump($responseData);
         return view('pages.contenido',
             ['datos'=>$responseData ,
                 'tipo'=>$tipo

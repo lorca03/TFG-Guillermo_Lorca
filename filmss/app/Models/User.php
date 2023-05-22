@@ -12,6 +12,10 @@ class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
 
+    public function registrosWatchlist()
+    {
+        return $this->hasOne(Watchlist::class);
+    }
     /**
      * The attributes that are mass assignable.
      *

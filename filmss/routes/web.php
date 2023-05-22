@@ -4,6 +4,7 @@ use App\Http\Controllers\ApiController;
 use App\Http\Controllers\ContenidoController;
 use App\Http\Controllers\ImagenAleatoriaController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\WatchlistController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -20,18 +21,18 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/perfil', function () {
         return view('pages.perfil');
     })->name('perfil');
+    Route::post('/guardarContenido',[WatchlistController::class,'guardarContenido'])->name('guardarContenido');
+    Route::post('/quitarContenido',[WatchlistController::class,'quitarContenido'])->name('quitarContenido');
 });
 
-Route::get('/',  [ApiController::class,'home']);
+Route::get('/',  [ApiController::class,'home'])->name('/');
 Route::post('/pelicula/{slug}',  [ContenidoController::class,'contenido'])->name('movie');
 Route::post('/serie/{slug}',  [ContenidoController::class,'contenido'])->name('tv');
 Route::post('/person/{slug}',  [ContenidoController::class,'contenido'])->name('person');
 Route::get('/obtenerMasResultados',  [ApiController::class,'obtenerMasResultados'])->name('obtenerMasResultados');
 Route::get('/buscar', [ApiController::class,'search'])->name('explorar.home');
-Route::get('/tendencias', [ImagenAleatoriaController::class,'tendencias']);
-Route::get('/watchlist', function () {
-    return view('pages.watchlist');
-});
+Route::get('/tendencias', [ApiController::class,'tendencias']);
+Route::get('/watchlist',[WatchlistController::class,'index'])->name('watchlist');
 Route::get('/login', function () {
     return view('pages.login');
 })->name('login');
