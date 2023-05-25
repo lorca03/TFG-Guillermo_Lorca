@@ -20,6 +20,7 @@
     <title>FILMSS - @yield('title')</title>
 </head>
 <body class="font-sans">
+
 @if(!Str::contains($_SERVER["REQUEST_URI"],['/login','/sign_up']))
     @include("layouts.nav")
 @endif
@@ -29,10 +30,6 @@
 @if(!Str::contains($_SERVER["REQUEST_URI"],['/login','/sign_up','/juegos','/perfil','/buscar','/person']))
     @include("layouts.footer")
 @endif
-
-
-<!--Scripts-->
-@vite('resources/js/footer.js')
 
 </body>
 </html>

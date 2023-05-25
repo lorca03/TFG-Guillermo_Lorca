@@ -110,6 +110,7 @@
       <path value="$PROJECT_DIR$/filmss/vendor/dragonmantank/cron-expression" />
       <path value="$PROJECT_DIR$/filmss/vendor/graham-campbell/result-type" />
       <path value="$PROJECT_DIR$/filmss/vendor/laravel/ui" />
+      <path value="$PROJECT_DIR$/filmss/vendor/hootlex/laravel-friendships" />
     </include_path>
   </component>
   <component name="PhpProjectSharedConfiguration" php_language_level="8.1" />

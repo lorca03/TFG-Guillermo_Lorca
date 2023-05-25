@@ -11,6 +11,7 @@
       <sourceFolder url="file://$MODULE_DIR$/filmss/app/Models" isTestSource="false" packagePrefix="App\Models\" />
       <sourceFolder url="file://$MODULE_DIR$/filmss/app/Utils" isTestSource="false" packagePrefix="App\Utils\" />
       <excludeFolder url="file://$MODULE_DIR$/filmss/vendor/laravel/ui" />
+      <excludeFolder url="file://$MODULE_DIR$/filmss/vendor/hootlex/laravel-friendships" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />

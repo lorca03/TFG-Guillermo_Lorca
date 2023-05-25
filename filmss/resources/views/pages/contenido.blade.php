@@ -126,7 +126,7 @@
                                         class="mt-1 text-blanco">{{count($datos['seasons'])}}</span></div>
 
                             @endif
-                            @if($certificacion!="")
+                            @if($certificacion!="false")
                                 <div class="col-span-6 mb-3">Edad<br><span
                                         class="mt-1 text-blanco">+{{$certificacion}}</span></div>
                             @endif

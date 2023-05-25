@@ -22,7 +22,8 @@ class WatchlistController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
+     * @param $mensaje
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Foundation\Application
      */
     public function index($mensaje=null)
     {
@@ -50,7 +51,8 @@ class WatchlistController extends Controller
     }
 
     /**
-     * Guardar Contenido en la Watchlist del usuario autenticado
+     * @param Request $request
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Foundation\Application|\Illuminate\Http\RedirectResponse
      */
     public function guardarContenido(Request $request)
     {
@@ -75,7 +77,8 @@ class WatchlistController extends Controller
     }
 
     /**
-     * Guardar Contenido en la Watchlist del usuario autenticado
+     * @param Request $request
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function quitarContenido(Request $request)
     {
@@ -92,7 +95,8 @@ class WatchlistController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     * @param string $id
+     * @return void
      */
     public function show(string $id)
     {

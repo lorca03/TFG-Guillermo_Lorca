@@ -3,6 +3,41 @@
     PERFIL
 @endsection
 @section('contenido')
+    <style>
+        /*Dropdown*/
+        .dropbtn {
+            /*background-color: #012b29;*/
+            /*border: 1px solid #fff;*/
+            min-width: 160px;
+            cursor: pointer;
+        }
+
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: #012b29;
+            min-width: 160px;
+            border: 1px solid #fff;
+            z-index: 1;
+        }
+
+        /*.dropdown-content a {*/
+        /*    padding: 12px 16px;*/
+        /*    text-decoration: none;*/
+        /*    display: block;*/
+        /*}*/
+
+        /*.dropdown-content a:hover {background-color: #f1f1f1}*/
+
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+    </style>
     <div class="bg-green2" style="height: calc(100% - 131px); min-height: calc(100vh - 131px);">
         <div class="container flex flex-col pt-20"><span class="text-yellow text-[45px]">¡Hola Guillermo!</span>
             @if(isset($_GET['seccion']))
@@ -11,8 +46,15 @@
                      hover:text-blanco px-3 py-2 no-underline">Cuenta</a>
                     <a href="/perfil?seccion=plataformas" class="<?php echo $_GET['seccion']=='plataformas'?'activePerfil':'noActivePerfil' ;?>
                     px-3 hover:text-blanco py-2 no-underline">Tus plataformas</a>
-                    <a href="/perfil?seccion=amigos" class="<?php echo $_GET['seccion']=='amigos'?'activePerfil':'noActivePerfil' ;?>
-                    px-3 py-2 hover:text-blanco no-underline">Amigos</a>
+                    <div class="dropdown text-yellow">
+                        <button class="dropbtn px-3 py-2 <?php echo $_GET['seccion'] == 'amigos' ? 'activePerfil' : ($_GET['seccion'] == 'descubre' ? 'activePerfil' : 'noActivePerfil'); ?>">Personas</button>
+                        <div class="dropdown-content text-center">
+                            <a href="/perfil?seccion=amigos" class="<?php echo $_GET['seccion']=='amigos'?'text-blanco':'noActivePerfil' ;?>
+                    hover:text-blanco no-underline">Amigos</a>
+                            <a href="/perfil?seccion=descubre" class="<?php echo $_GET['seccion']=='descubre'?'text-blanco':'noActivePerfil' ;?>
+                     hover:text-blanco no-underline">Descubre</a>
+                        </div>
+                    </div>
                 </div>
                 @switch($_GET['seccion'])
                     @case('cuenta')
@@ -106,6 +148,71 @@
                                 </div>
                             </div>
                         </div>
+                        @break
+                    @case('amigos')
+                        <div class="container flex mt-5 justify-center" style="height: calc(100% - 243px);gap:120px">
+                            <div class="flex justify-center align-items-center bg-green rounded-[15px] text-blanco"
+                                 style="width:230px;height:110px;border:1px solid #fff;box-shadow:0px 4px 4px #012b29;">
+                                <div class="container">
+                                    <div class="row pl-5">@PEPE</div>
+                                    <div class="row mt-3">
+                                        <div class="col flex justify-center align-items-center">
+                                            <button type="submit" class="bg-green2 p-2 rounded-[15px]">Aceptar</button> </div>
+                                        <div class="col flex justify-center align-items-center">
+                                            <button type="submit" class="p-2 rounded-[15px]" style="background-color:#B62E2E">Eliminar</button></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="bg-green w-[350px] flex flex-col justify-center align-items-center p-4 rounded-[15px]"
+                                style="border:1px solid #ecb42d;box-shadow:0px 4px 4px #012b29;">
+                                <div class="bg-green2 flex flex-col justify-center align-items-center pt-4 p-2 pb-3 mb-2 w-10/12 rounded-[15px]" style="gap: 15px">
+                                    <div class="flex justify-center align-items-center" style="gap:45px;">
+                                        <span class="text-[20px] text-yellow">@Sofia</span>
+                                        <a href="" class="no-underline">
+                                            <div class="bg-yellow rounded-[15px] p-2 text-blanco" style="border:1px solid #fff">Watchlist</div>
+                                        </a>
+                                    </div>
+                                    <div class="">
+                                        <span class="pl-2 text-blanco">sofia@gmail.com</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        @break
+                    @case('descubre')
+                        <div class="container-fluid flex justify-center align-items-center">
+                            <div class="flex mt-14 text-[22px] text-yellow flex-col w-1/2 space-y-9">
+                                <div class="flex justify-center pb-4 align-items-center flex-col">
+                                    <input type="search"
+                                           class="placeholder-yellow focus:outline-0 w-10/12 p-3 bg-green rounded-[15px]"
+                                           placeholder="Buscar nuevos amigos...">
+                                    <div class="bg-green mt-5 flex flex-col justify-center align-items-center p-4 rounded-[15px]"
+                                        style="border:1px solid #ecb42d;box-shadow:0px 4px 4px #012b29;width: 55%">
+                                        <div
+                                            class="bg-green2 flex justify-around flex-row align-items-center p-2 mb-2 w-10/12 rounded-[15px]">
+                                            <div class="flex justify-center align-items-center">
+                                                <span class="pl-2">@Sofia</span>
+                                            </div>
+                                            <a href="" class="text-yellow no-underline text-[16px]">
+                                                <div class="bg-blanco rounded-[15px] flex align-items-center justify-center text-[16px] w-16 h-14"
+                                                     style="border:1px solid #ecb42d;box-shadow:0px 4px 4px #012b29"> Amigo</div>
+                                            </a>
+                                        </div>
+                                        <div
+                                            class="bg-green2 flex justify-around flex-row align-items-center p-2 mb-2 w-10/12 rounded-[15px]">
+                                            <div class="flex justify-center align-items-center" >
+                                                <span class="pl-2 text-blanco">@Ramon</span>
+                                            </div>
+                                            <a href="" class="text-yellow no-underline text-[16px]">
+                                                <div class="bg-blanco rounded-[15px] flex align-items-center justify-center text-[16px] w-16 h-14"
+                                                     style="border:1px solid #ecb42d;box-shadow:0px 4px 4px #012b29">Añadir <br> Amigo</div>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
                         @break
                 @endswitch
             @else

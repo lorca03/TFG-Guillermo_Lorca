@@ -56,7 +56,7 @@ class ContenidoController extends Controller
                     'cast'=>$responseCredits['cast'],
                     'jefe'=>$jefe,
                     'plataformas'=>isset($responsePlataforms['results']['ES']['flatrate'])?$responsePlataforms['results']['ES']['flatrate']:'false',
-                    'certificacion'=>$certificacion
+                    'certificacion'=>isset($certificacion)?$certificacion:'false'
                 ]);
         }
         return view('pages.contenido',
