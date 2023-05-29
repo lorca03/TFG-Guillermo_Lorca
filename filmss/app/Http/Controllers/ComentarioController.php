@@ -2,7 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Comentario;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Str;
 
 class ComentarioController extends Controller
 {
@@ -17,9 +21,15 @@ class ComentarioController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function guardar(Request $request)
     {
-        //
+        $comentario = new Comentario();
+        $comentario->user_id = Auth::id();
+        $comentario->comentario = $request->input('comentario');
+        $comentario->contenido = $request->input('contenido');
+        $comentario->save();
+
+        return redirect(route('watchlist'));
     }
 
     /**

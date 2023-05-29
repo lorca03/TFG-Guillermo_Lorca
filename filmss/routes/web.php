@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ApiController;
+use App\Http\Controllers\ComentarioController;
 use App\Http\Controllers\ContenidoController;
 use App\Http\Controllers\ImagenAleatoriaController;
 use App\Http\Controllers\UserController;
@@ -18,11 +19,15 @@ use Illuminate\Support\Facades\Route;
 |
 */
 Route::middleware(['auth'])->group(function () {
-    Route::get('/perfil', function () {
-        return view('pages.perfil');
-    })->name('perfil');
+    Route::get('/perfil', [UserController::class,'perfil'])->name('perfil');
     Route::post('/guardarContenido',[WatchlistController::class,'guardarContenido'])->name('guardarContenido');
     Route::post('/quitarContenido',[WatchlistController::class,'quitarContenido'])->name('quitarContenido');
+    Route::post('/sendFriend', [UserController::class,'enviar'])->name('enviar');
+    Route::post('/cancel_friend', [UserController::class,'cancel'])->name('cancelar.amistad');
+    Route::post('/acept_friend', [UserController::class,'aceptar'])->name('aceptar.amistad');
+    Route::post('/denegar_friend', [UserController::class,'denegar'])->name('denegar.amistad');
+    Route::post('/actualizar', [UserController::class,'update'])->name('actualizar.datos');
+    Route::post('/guardarComentario', [ComentarioController::class,'guardar'])->name('guardar.comentario');
 });
 
 Route::get('/',  [ApiController::class,'home'])->name('/');

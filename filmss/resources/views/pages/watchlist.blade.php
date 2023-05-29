@@ -42,9 +42,10 @@
                                 $slug = Str::slug($result[$image_name]);
                             @endphp
                             <div class="col-sm-12 text-green col-md-6 col-lg-4 mb-3">
-                                <form method="POST" class="w-full flex">
+                                <form method="POST" action="{{route($result[0],['slug' => $slug])}}"  class="w-full flex">
                                     @csrf
                                     <input type="hidden" name="id" value="{{$result['id']}}">
+                                    <button type="submit">
                                     @if($image_path)
                                         <div
                                             class="h-[310px] w-48 sm:w-56 flex-none bg-cover rounded-tl-[10px] rounded-bl-[10px] text-center overflow-hidden"
@@ -52,11 +53,11 @@
                                             title="{{$result[$image_name]}}">
                                         </div>
                                     @else
-                                        <div
-                                            class="bg-gray-300 h-[310px] rounded-tl-[10px] rounded-bl-[10px]">
+                                        <div class="bg-gray-300 h-[310px] rounded-tl-[10px] rounded-bl-[10px]">
                                             <img src="{{asset('images/no-image-slide.png')}}"
                                                  class="w-[166px] h-[249px] "></div>
                                     @endif
+                                    </button>
                                     <div
                                         class="p-4 h-[310px] text-green rounded-tr-[10px] rounded-br-[10px] flex flex-col justify-between bg-yellow">
                                         <div class="font-bold text-xl mb-2">{{$result[$image_name]}}</div>
@@ -85,7 +86,7 @@
                                                 <div class="col-12 p-1 flex justify-center w-auto align-items-center"
                                                      style="border:1px solid #012b29;border-radius:10px;box-shadow:0px 4px 4px #012b29;">
                                                     <form action="{{route('quitarContenido')}}" class="mb-1" method="post">@csrf
-                                                        <input type="hidden" name="contenido" value="{{$result[0]}}/{{$result['id']}}">
+                                                        <input type="hidden" name="contenido" value="{{$result[0]}}/{{$result['id']}}/{{$result[$image_name]}}">
                                                         <button type="submit" class="flex align-items-center">
                                                             <img class="w-[30px]"
                                                                  src="{{asset('images/watchlist/guardarRe.png')}}"

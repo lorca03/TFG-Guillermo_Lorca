@@ -155,9 +155,6 @@ class ApiController extends Controller
         // Obtener las primeras 10 películas más populares
         $topMovies = array_slice($movies, 0, 10);
         $topSeries = array_slice($series, 0, 10);
-//        var_dump($topMovies);
-//        echo '<br />';
-//        var_dump($topSeries);
         return view('/pages.tendencias', ['imagen_aleatoria' => ImagenAleatoriaController::tendencias(),
             'peliculas'=>$topMovies,
             'series'=>$topSeries,]);

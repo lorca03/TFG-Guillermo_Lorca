@@ -37,9 +37,9 @@ class WatchlistController extends Controller
                 $error = session('error');
                 $responseData = array();
                 foreach ($registros as $registro){
-                    $position = strpos($registro->contenido, '/');
-                    $tipo= substr($registro->contenido,0,$position);
-                    $id = substr($registro->contenido,$position+1);
+                    $parts = explode("/", $registro->contenido);
+                    $tipo= $parts[0];
+                    $id = $parts[1];
                     $apiUrl = 'https://api.themoviedb.org/3/' . $tipo . '/' . $id . '?language=es';
                     $responseData[$id] = $this->apiController->consulta($apiUrl);
                     array_push($responseData[$id],$tipo);
@@ -63,7 +63,7 @@ class WatchlistController extends Controller
             $watchlist->estado = self::SIN_ESTADO;
             $watchlist->save();
 
-            return $this->index();
+            return redirect()->route('watchlist');
         }catch (QueryException $e){
             $errorCode = $e->getCode();
             if ($errorCode == 23000) {
