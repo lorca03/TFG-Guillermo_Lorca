@@ -13,4 +13,8 @@ class Comentario extends Model
     {
         return $this->belongsTo(User::class,'user_id');
     }
+    public static function comentarios($contenido)
+    {
+        return self::where('contenido',$contenido)->get();
+    }
 }

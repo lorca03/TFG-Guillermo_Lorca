@@ -5,6 +5,7 @@ use App\Http\Controllers\ComentarioController;
 use App\Http\Controllers\ContenidoController;
 use App\Http\Controllers\ImagenAleatoriaController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\ValoracionController;
 use App\Http\Controllers\WatchlistController;
 use Illuminate\Support\Facades\Route;
 
@@ -28,9 +29,12 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/denegar_friend', [UserController::class,'denegar'])->name('denegar.amistad');
     Route::post('/actualizar', [UserController::class,'update'])->name('actualizar.datos');
     Route::post('/guardarComentario', [ComentarioController::class,'guardar'])->name('guardar.comentario');
+    Route::post('/valorar', [ValoracionController::class,'valorar'])->name('valorar.contenido');
+    Route::post('/vista', [WatchlistController::class,'vista'])->name('vista');
 });
 
 Route::get('/',  [ApiController::class,'home'])->name('/');
+Route::get('/filter', [ApiController::class, 'filter'])->name('filter');
 Route::post('/pelicula/{slug}',  [ContenidoController::class,'contenido'])->name('movie');
 Route::post('/serie/{slug}',  [ContenidoController::class,'contenido'])->name('tv');
 Route::post('/person/{slug}',  [ContenidoController::class,'contenido'])->name('person');

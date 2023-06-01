@@ -75,50 +75,20 @@
                                     </form>
                                 </div>
                                 <div class="col flex flex-col align-items-center justify-center">
-                                    <button type="submit" class="flex flex-col justify-center align-items-center">
+                                    <button type="submit" class="flex flex-col justify-center align-items-center" data-bs-toggle="modal" data-bs-target="#ValorarModal{{$datos['id']}}">
                                         <img class="w-[40px]" src="{{asset('images/logo_rolloAmarillo.png')}}" alt="Guardar">
-                                        Valorar</button>
+                                        Valorar
+                                    </button>
+                                    <!-- Modal -->
+                                    @include('pages.modales.valorarModal')
                                 </div>
                                 <div class="col flex flex-col align-items-center justify-center">
                                     <button type="submit" class="flex flex-col justify-center align-items-center" data-bs-toggle="modal" data-bs-target="#ComentarModal">
                                         <img class="w-[25px]" src="{{asset('images/comentario.png')}}" alt="Guardar">
-                                        Comentar</button>
+                                        Comentar
+                                    </button>
                                     <!-- Modal -->
-                                    <div class="modal fade" id="ComentarModal" style="color:#ecb42d;" tabindex="-1" aria-labelledby="ComentarModallLabel" aria-hidden="true">
-                                        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
-                                            <div class="modal-content" style="background-color:#1f4442;color:#ecb42d;">
-                                                <div class="modal-header">
-                                                    <h1 class="modal-title fs-5" id="ComentarModalLabel">{{$datos[$image_name]}}</h1>
-                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                                </div>
-                                                @auth()
-                                                <form method="POST" action="{{route('guardar.comentario')}}">
-                                                    @csrf
-                                                <div class="modal-body">
-                                                        <div class="mb-3">
-                                                            <input type="hidden" name="contenido" value="{{$tipo}}/{{$datos['id']}}/{{$datos[$image_name]}}">
-                                                            <label for="message-text" class="col-form-label">Message:</label>
-                                                            <textarea class="form-control mb-1" rows="3" name="comentario" maxlength="130" id="comentario"></textarea>
-                                                            <span>130 caracteres</span>
-                                                        </div>
-                                                </div>
-                                                <div class="modal-footer">
-                                                    <button type="button" class="btn" style="background-color:#B62E2E;color:white" data-bs-dismiss="modal">Cancel</button>
-                                                    <button type="submit" class="btn" style="background-color:#012B29;color:white">Send message</button>
-                                                </div>
-                                                </form>
-                                                @else
-                                                    <div class="modal-body">
-                                                        <div class="mb-3">
-                                                            <label for="message-text" class="col-form-label">Para comentar debes tener una cuenta.</label>
-                                                            <a class="bg-green2 mt-2 p-3 text-[20px] no-underline text-blanco rounded-[10px]" href="/sign_up">Inicia
-                                                                Sesión</a>
-                                                        </div>
-                                                    </div>
-                                                @endauth
-                                            </div>
-                                        </div>
-                                    </div>
+                                    @include('pages.modales.comentarModal')
                                 </div>
                             </div>
                         </div>
@@ -127,7 +97,10 @@
                                 <span class="font-bold">{{$datos['tagline']}}</span> <br><br>
                             @endif
                             <p class="text-left">{{$datos['overview']}}</p>
-
+                                <button type="submit" class="bg-yellow rounded-[10px] p-2" data-bs-toggle="modal" data-bs-target="#ComentariosModal">
+                                    Ver Comentarios</button>
+                                <!-- Modal -->
+                                @include('pages.modales.comentariosModel')
                         </div>
                     </div>
                     <div class="col text-yellow">
@@ -152,8 +125,13 @@
                         <div class="grid mt-5 grid-cols-12 text-[22px] gap-4">
                             <div class="col-span-6 mb-3">Tipo <br><span
                                     class="mt-1 text-blanco">{{$tipo ==='movie' ? 'Película' : 'Serie'}}</span></div>
-                            <div class="col-span-6 mb-3">Calificacion<br><span
-                                    class="mt-1 text-blanco">{{$tipo ==='movie' ? 'Película' : 'Serie'}}</span></div>
+                            <?php
+                                $calificacion = \App\Models\Valoracion::calificacion($tipo.'/'.$datos['id'].'/'.$datos[$image_name]);
+
+                            if($calificacion!=false){ ?>
+                                <div class="col-span-6 mb-3">Calificacion<br><span class="mt-1 text-blanco">
+                                    {{\App\Models\Valoracion::calificacion($tipo.'/'.$datos['id'].'/'.$datos[$image_name])}}/5</span></div>
+                            <?php } ?>
                             @if($tipo ==='movie')
                                 <div class="col-span-6 mb-3">Duracion<br><span class="mt-1 text-blanco">{{$datos['runtime']}} minutos</span>
                                 </div>
@@ -180,16 +158,16 @@
                                 <div class="row">
                                     @foreach($cast as $index => $person)
                                         @if($index<4)
-                                            <div class="col">
+                                            <div class="col-3 flex flex-col align-items-center justify-center">
                                                 @php($slug = Str::slug($person['name']))
                                                 <form method="POST" action="{{route('person',['slug' => $slug])}}">
                                                     @csrf
                                                     <input type="hidden" name="id" value="{{$person['id']}}">
                                                     <button type="submit">
-                                                        <span class="mt-1 text-blanco">{{ $person['name']}}</span>
+                                                        <span class="mt-1 text-blanco font-bold">{{ $person['name']}}</span>
                                                     </button>
                                                 </form>
-                                                <span class="mt-1 text-blanco">{{ $person['character']}}</span>
+                                                <span class="mt-1 text-blanco text-[16px]">{{ $person['character']}}</span>
                                             </div>
                                         @endif
                                     @endforeach

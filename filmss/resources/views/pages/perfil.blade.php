@@ -67,7 +67,8 @@
                                     </div>
                                     <div class="flex justify-between align-items-center">
                                         <span style="text-shadow:0px 4px 4px #012b29;">Contraseña</span>
-                                        <input placeholder="••••••••" type="password" name="password"
+                                        <input type="password" title="*Debe contener al menos una letra minúscula, una letra mayúscula y un número"
+                                               name="password" pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).+$" minlength="8" placeholder="••••••••" type="password"
                                                class="inputCuenta rounded-[10px] focus:outline-0 placeholder-blanco p-2 bg-transparent">
                                     </div>
                                     <div class="flex align-items-center justify-between pt-5">
@@ -198,39 +199,12 @@
                                     style="gap: 15px">
                                     <div class="flex justify-center align-items-center" style="gap:45px;">
                                         <span class="text-[20px] text-yellow">{{'@'.$friend->name}}</span>
-                                        <button type="button" class="btn rounded-[15px] p-2" data-bs-toggle="modal" data-bs-target="#watchlistModal"
+                                        <button type="button" class="btn rounded-[15px] p-2" data-bs-toggle="modal" data-bs-target="#watchlistModal{{$friend->name}}"
                                                 style="border:1px solid #fff;color:#fff;background-color:#ecb42d">
                                                 Watchlist
                                         </button>
                                         <!-- Modal -->
-                                        <div class="modal fade" id="watchlistModal" tabindex="-1" aria-labelledby="watchlistModalLabel" aria-hidden="true">
-                                            <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable">
-                                                <div class="modal-content" style="background-color:#ecb42d;color:#FFF; border:1px solid white">
-                                                    <div class="modal-header">
-                                                        <h1 class="modal-title fs-5" id="watchlistModalLabel">{{'@'.$friend->name}}</h1>
-                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                                    </div>
-                                                    <div class="modal-body">
-                                                        @php($watchlist= new \App\Models\Watchlist())
-                                                        <ul>
-                                                        @foreach($watchlist->registros($friend->id) as $contenido)
-                                                                @php($parts = explode("/",$contenido->contenido))
-                                                                <li>
-                                                                    <form method="POST" action="{{route($parts[0],['slug' => Str::slug($parts[2])])}}">
-                                                                        @csrf
-                                                                        <input type="hidden" name="id" value="{{$parts[1]}}">
-                                                                        <button type="submit" class="text-green">
-                                                                            {{$parts[2]}}
-                                                                        </button>
-                                                                    </form>
-                                                                </li>
-                                                        @endforeach
-                                                        </ul>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-
+                                        @include('pages.modales.watchlistModal')
                                     </div>
                                     <div class="">
                                         <span class="pl-2 text-blanco">{{$friend->email}}</span>

@@ -17,40 +17,45 @@
                 @endif
                 <div class="container-fluid pt-9" style="padding-left: 64px;padding-right: 64px;max-width: 1752px;">
                     <div class="row">
+                        @php
+                            $pos = strpos($_SERVER['REQUEST_URI'], '?');
+                            $uri = $pos !== false ? substr($_SERVER['REQUEST_URI'], 0, $pos) : $_SERVER['REQUEST_URI'];
+                        @endphp
                         <div class="col-6 flex text-[20px] align-items-center justify-start">
-                            <a href=""
+                            <a href="{{$uri}}?estado=watchlist"
                                class="bg-yellow text-green rounded-[10px] pt-3 pb-3 pl-6 pr-6 mr-4 no-underline flex">
                                 <img class="w-[25px]" src="{{asset('images/watchlist/guardarRe.png')}}"
                                      alt="Icono"><span class="pl-1">Watchlist</span></a>
-                            <a href=""
+                            <a href="{{$uri}}?estado=vista"
                                class="bg-yellow text-green rounded-[10px] pt-3 pb-3 pl-7 pr-7 mr-4 no-underline flex">
                                 <img class="w-[30px]" src="{{asset('images/watchlist/checkVerde.png')}}"
                                      alt="Icono"><span class="pl-1">Vista</span></a>
-                            <a href=""
+                            <a href="{{$uri}}?estado=valorada"
                                class="bg-yellow text-green rounded-[10px] pt-3 pb-3 pl-7 pr-7 mr-4 no-underline flex ">
                                 <img class="w-[40px]" src="{{asset('images/watchlist/logo_rolloVerde.png')}}"
                                      alt="Icono"><span class="pl-1">Valorada</span></a>
                         </div>
                     </div>
                     <div class="row pb-4 justify-center mt-5">
-                        @foreach ($responseData as $result)
+                        @foreach ($responseData as $datos)
                             @php
-                                $image_path = isset($result['poster_path']) ? $result['poster_path'] :
-                                              (isset($result['profile_path']) ? $result['profile_path'] :
-                                              (isset($result['backdrop_path']) ? $result['backdrop_path'] : false));
-                                $image_name = isset($result['title']) ? 'title' : 'name';
-                                $slug = Str::slug($result[$image_name]);
+                                $image_path = isset($datos['poster_path']) ? $datos['poster_path'] :
+                                              (isset($datos['profile_path']) ? $datos['profile_path'] :
+                                              (isset($datos['backdrop_path']) ? $datos['backdrop_path'] : false));
+                                $image_name = isset($datos['title']) ? 'title' : 'name';
+                                $slug = Str::slug($datos[$image_name]);
                             @endphp
                             <div class="col-sm-12 text-green col-md-6 col-lg-4 mb-3">
-                                <form method="POST" action="{{route($result[0],['slug' => $slug])}}"  class="w-full flex">
+                                <div class="w-full flex">
+                                    <form method="POST" action="{{route($datos[0],['slug' => $slug])}}">
                                     @csrf
-                                    <input type="hidden" name="id" value="{{$result['id']}}">
+                                    <input type="hidden" name="id" value="{{$datos['id']}}">
                                     <button type="submit">
                                     @if($image_path)
                                         <div
                                             class="h-[310px] w-48 sm:w-56 flex-none bg-cover rounded-tl-[10px] rounded-bl-[10px] text-center overflow-hidden"
                                             style="background-image: url('https://image.tmdb.org/t/p/w400/{{ $image_path }}')"
-                                            title="{{$result[$image_name]}}">
+                                            title="{{$datos[$image_name]}}">
                                         </div>
                                     @else
                                         <div class="bg-gray-300 h-[310px] rounded-tl-[10px] rounded-bl-[10px]">
@@ -58,14 +63,16 @@
                                                  class="w-[166px] h-[249px] "></div>
                                     @endif
                                     </button>
-                                    <div
-                                        class="p-4 h-[310px] text-green rounded-tr-[10px] rounded-br-[10px] flex flex-col justify-between bg-yellow">
-                                        <div class="font-bold text-xl mb-2">{{$result[$image_name]}}</div>
+                                    </form>
+                                    <div class="p-4 h-[310px] text-green rounded-tr-[10px] rounded-br-[10px] flex flex-col justify-between bg-yellow">
+                                        <div class="font-bold text-xl mb-2">{{$datos[$image_name]}}</div>
                                         <div class="container text-[20px]">
                                             <div class="row">
                                                 <div class="col-12 mr-1 mb-3 flex justify-center w-auto align-items-center"
                                                      style="border:1px solid #012b29;border-radius:10px;box-shadow:0px 4px 4px #012b29;">
-                                                    <form action="" class="mb-1" method="post">
+                                                    <form action="{{route('vista')}}" class="mb-1" method="post">
+                                                        @csrf
+                                                        <input type="hidden" name="contenido" value="{{$datos[0]}}/{{$datos['id']}}/{{$datos[$image_name]}}">
                                                         <button type="submit" class="flex align-items-center">
                                                             <img class="w-[25px]"
                                                                  src="{{asset('images/watchlist/checkVerde.png')}}"
@@ -75,18 +82,19 @@
                                                 </div>
                                                 <div class="col-12 mb-3 flex justify-center w-auto align-items-center"
                                                      style="border:1px solid #012b29;border-radius:10px;box-shadow:0px 4px 4px #012b29;">
-                                                    <form action="" class="mb-1" method="post">
-                                                        <button type="submit" class="flex align-items-center">
+                                                        <button type="submit" class="flex mb-1 align-items-center" data-bs-toggle="modal" data-bs-target="#ValorarModal{{$datos['id']}}">
                                                             <img class="w-[35px]"
                                                                  src="{{asset('images/watchlist/logo_rolloVerde.png')}}"
                                                                  alt="Icono"><span class="ml-1">Valorar</span>
                                                         </button>
-                                                    </form>
+                                                        <!-- Modal -->
+                                                        @include('pages.modales.valorarModal')
                                                 </div>
                                                 <div class="col-12 p-1 flex justify-center w-auto align-items-center"
                                                      style="border:1px solid #012b29;border-radius:10px;box-shadow:0px 4px 4px #012b29;">
-                                                    <form action="{{route('quitarContenido')}}" class="mb-1" method="post">@csrf
-                                                        <input type="hidden" name="contenido" value="{{$result[0]}}/{{$result['id']}}/{{$result[$image_name]}}">
+                                                    <form action="{{route('quitarContenido')}}" class="mb-1" method="POST">
+                                                        @csrf
+                                                        <input type="hidden" name="contenido" value="{{$datos[0]}}/{{$datos['id']}}/{{$datos[$image_name]}}">
                                                         <button type="submit" class="flex align-items-center">
                                                             <img class="w-[30px]"
                                                                  src="{{asset('images/watchlist/guardarRe.png')}}"
@@ -97,7 +105,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                </form>
+                                </div>
                             </div>
                         @endforeach
                     </div>
@@ -136,7 +144,7 @@
                 todo lo que deseas ver en un solo lugar? <br>
                 ¡Hazlo ya con tu WatchList!
             </div>
-            <a class="bg-green2 mt-2 p-3 text-[20px] no-underline text-blanco rounded-[10px]" href="/sign_up">Inicia
+            <a class="bg-green2 mt-2 p-3 text-[20px] no-underline text-blanco rounded-[10px]" href="/login">Inicia
                 Sesión</a>
         </div>
     @endauth

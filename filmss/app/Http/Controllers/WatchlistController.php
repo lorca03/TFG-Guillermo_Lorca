@@ -25,7 +25,7 @@ class WatchlistController extends Controller
      * @param $mensaje
      * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Foundation\Application
      */
-    public function index($mensaje=null)
+    public function index(Request $request,$mensaje=null)
     {
         if (Auth::check()){
             if (Auth::user()->registrosWatchlist()->exists()){
@@ -34,6 +34,13 @@ class WatchlistController extends Controller
                 }
                 $watchlist = new Watchlist();
                 $registros = $watchlist->registros(Auth::id());
+                $estado = $request->input('estado');
+                $opcionesFiltrar = [
+                    'valorada' => '2',
+                    'vista' => '1',
+                    "" => 'watchlist'
+                ];
+                $estado = $estado!=null ? $estado: "watchlist";
                 $error = session('error');
                 $responseData = array();
                 foreach ($registros as $registro){
@@ -41,8 +48,11 @@ class WatchlistController extends Controller
                     $tipo= $parts[0];
                     $id = $parts[1];
                     $apiUrl = 'https://api.themoviedb.org/3/' . $tipo . '/' . $id . '?language=es';
-                    $responseData[$id] = $this->apiController->consulta($apiUrl);
-                    array_push($responseData[$id],$tipo);
+                    $estadoCondicion = ($estado == 'watchlist') ? true : ($registro->estado == $opcionesFiltrar[$estado]);
+                    if ($estadoCondicion) {
+                        $responseData[$id] = $this->apiController->consulta($apiUrl);
+                        array_push($responseData[$id], $tipo);
+                    }
                 }
                 return view('pages.watchlist', compact('responseData', 'error'));
             }
@@ -95,21 +105,28 @@ class WatchlistController extends Controller
     }
 
     /**
-     * @param string $id
-     * @return void
+     * Show the form for editing the specified resource.
      */
-    public function show(string $id)
+    public function vista(Request $request)
     {
-        //
+        $contenido = $request->input('contenido');
+        self::cambiarEstado(1,$contenido);
+        return  redirect(route('watchlist'));
     }
 
     /**
-     * Show the form for editing the specified resource.
+     * @param string $id
+     * @return void
      */
-    public function edit(string $id)
+    public static function cambiarEstado($estado,$contenido)
     {
-        //
+        $watchlist = Watchlist::where('user_id', Auth::id())
+            ->where('contenido', $contenido)
+            ->update(['estado' => $estado]);
+        return  redirect(route('watchlist'));
     }
+
+
 
     /**
      * Update the specified resource in storage.

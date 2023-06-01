@@ -1,9 +1,9 @@
 .l_homeF{
-    -webkit-text-stroke: 1px #ecb42d; text-stroke: 1px #ecb42d;
+    /*-webkit-text-stroke: 1px #ecb42d; text-stroke: 1px #ecb42d;*/
 }
 .enlaces_Home{
-    -webkit-text-stroke: 0.5px #ecb42d;
-    text-stroke: 0.5px #ecb42d;
+    /*-webkit-text-stroke: 0.5px #ecb42d;*/
+    /*text-stroke: 0.5px #ecb42d;*/
 }
 ul.l_homeF li:not(:last-child)::after {
     content: "|";
@@ -11,15 +11,17 @@ ul.l_homeF li:not(:last-child)::after {
     margin-right: 2rem;
 }
 .filtroModal{
-    background-color: #FFFFFF;
+    /*background-color: #FFFFFF;*/
     padding: 12px;
     border-radius: 50px;
     font-size: 25px;
-    border: 2px solid #ecb42d;
+    border: 2px solid #fff;
 
 }
 .filtroModal:hover{
-    text-shadow: 0px 4px 4px #ecb42d;
+    /*text-shadow: 0px 4px 4px #ecb42d;*/
+    color: #ecb42d;
+    border: 2px solid #ecb42d;
 }
 #inputBuscador:focus{
     outline: none;

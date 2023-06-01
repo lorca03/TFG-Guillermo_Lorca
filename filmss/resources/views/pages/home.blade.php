@@ -16,8 +16,7 @@
                 <div class="buscador relative inline-flex mt-8 w-100 text-xl font-normal">
                     <input type="text" id="inputBuscador" name="s"
                            class="bg-green2 font- rounded-[50px] text-blanco p-[35px] h-10 w-full placeholder-white"
-                           placeholder="&#xf002; Buscar peliculas, programas de televisión, personas...">
-                    {{--                <img src="{{ asset("images/lupa-blanca.png") }}" class="absolute h-6 left-7 top-6"  alt="lupa">--}}
+                           placeholder="Buscar peliculas, programas de televisión, personas...">
                     <button type="submit"
                             class="absolute rounded-[50px] right-0 p-[35px] h-10 top-0 bg-yellow hover:text-white flex items-center">
                         Explora
@@ -28,33 +27,42 @@
     </div>
     <div class="contenedor_busqueda bg-green w-100"
          style="height: calc(100% - 243px); min-height: calc(100vh - 243px);">
-        <div class="container text-blanco flex justify-center pt-20">
+        <div class="container text-yellow flex justify-center pt-20">
             <ul class="l_homeF flex justify-between text-[30px]">
-                <li><a class="enlaces_Home no-underline text-blanco hover:text-yellow" href="#">Todo</a></li>
-                <li><a class="enlaces_Home no-underline text-blanco hover:text-yellow " href="#">Películas</a></li>
-                <li><a class="enlaces_Home no-underline text-blanco hover:text-yellow" href="#">Series</a></li>
+                @php
+                        $pos = strpos($_SERVER['REQUEST_URI'], 'filtrar');
+                        $uri = $pos !== false ? (substr($_SERVER['REQUEST_URI'],$pos-1,1)=='?'?substr($_SERVER['REQUEST_URI'],0,$pos-1).'?':substr($_SERVER['REQUEST_URI'],0,$pos-1).'&')
+                        : ($_SERVER['REQUEST_URI']=='/'?$_SERVER['REQUEST_URI'].'?':$_SERVER['REQUEST_URI'].'&');
+                    @endphp
+                <li><a class="enlaces_Home no-underline text-yellow hover:text-blanco" href="{{$uri}}filtrar=todo">Todo</a></li>
+                <li><a class="enlaces_Home no-underline text-yellow hover:text-blanco " href="{{$uri}}filtrar=peliculas">Películas</a></li>
+                <li><a class="enlaces_Home no-underline text-yellow hover:text-blanco" href="{{$uri}}filtrar=series">Series</a></li>
             </ul>
         </div>
-        <div class="container text-green flex justify-center gap-[80px] pt-8">
-            <button type="submit" class="filtroModal">Género</button>
-            <button type="submit" class="filtroModal">Puntuación</button>
+        <div class="container text-blanco flex justify-center gap-[80px] pt-8">
+            <button type="submit" class="filtroModal" data-bs-toggle="modal" data-bs-target="#GeneroModal" data-genre="">Género</button>
+                @include('pages.modales.home.generoModal')
+            <button type="submit" class="filtroModal" data-bs-toggle="modal" data-bs-target="#PuntuacionModal">Puntuación</button>
+                @include('pages.modales.home.puntuacionModal')
             <button type="submit" class="filtroModal">Idioma</button>
             <button type="submit" class="filtroModal">Duración</button>
-            <button type="submit" class="filtroModal">País</button>
+            <button type="submit" class="filtroModal" data-bs-toggle="modal" data-bs-target="#PaisModal">País</button>
+                @include('pages.modales.home.PaisModal')
         </div>
         <div class="container-fluid flex justify-center gap-[10px] pt-14">
-            <?php
-            for ($i = 0;
-                 $i < 20;
-                 $i++){
-                ?>
-            <div class="rounded-[15px]"><a href="#" class=""><img class="h-14 w-14 rounded-[15px]"
-                                                                  src="{{ asset("images/netflix.png") }}" alt="Perfil"></a>
+            @php
+                $pos = strpos($_SERVER['REQUEST_URI'], 'plataforma');
+                $uri = $pos !== false ? (substr($_SERVER['REQUEST_URI'],$pos-1,1)=='?'?substr($_SERVER['REQUEST_URI'],0,$pos-1).'?':substr($_SERVER['REQUEST_URI'],0,$pos-1).'&')
+                : ($_SERVER['REQUEST_URI']=='/'?$_SERVER['REQUEST_URI'].'?':$_SERVER['REQUEST_URI'].'&');
+            @endphp
+            @foreach($aplicaciones as $aplicacion)
+            <div class="rounded-[15px]">
+                <a href="{{$uri}}plataforma={{$aplicacion['provider_id']}}" class="">
+                    <img class="h-14 w-14 rounded-[15px]" src="https://image.tmdb.org/t/p/w400/{{$aplicacion['logo_path']}}" alt="Perfil">
+                </a>
             </div>
-                <?php
-            }
-            $contador = 0
-            ?>
+            @endforeach
+            @php $contador = 0 @endphp
         </div>
         <div class="container mt-[50px] text-blanco" id="resultados">
             <div class="row flex align-items-center pb-4 justify-center">
@@ -98,7 +106,40 @@
         </div>
     </div>
     <script>
+        @if(strpos($_SERVER['REQUEST_URI'], 'filtrar')!==false)
+            var filtro = urlParams.get("filtrar");
+            console.log(filtro);
+        @else
+             filtro=''
+        @endif
+       @if(strpos($_SERVER['REQUEST_URI'], 'genero')!==false)
+            var genero = urlParams.get("genero");
+            console.log(genero);
+       @else
+            genero=''
+       @endif
+        @if(strpos($_SERVER['REQUEST_URI'], 'plataforma')!==false)
+            var plataforma = urlParams.get("plataforma");
+            console.log(plataforma);
+        @else
+            genero=''
+        @endif
+
         var contador = 4;
+        var ocupan2 = ['Ciencia ficción', 'Terror', 'Acción', 'Aventura', 'Fantasía'];
+        var generoSeparado = genero.split(',');
+
+        if (filtro == 'todo' || filtro == '') {
+            contador = 4;
+        } else if (generoSeparado.some(elemento => ocupan2.includes(elemento))) {
+            contador = 2;
+            console.log(genero);
+        } else if (genero == 'Historia') {
+            contador = -1;
+        } else {
+            contador = 2;
+        }
+
         function crearHTMLResultados(resultados) {
             let html = '';
             let csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
@@ -151,7 +192,18 @@
                 $.ajax({
                     url: '{{ route("obtenerMasResultados") }}',
                     type: 'GET',
-                    data: {pagina: pagina},
+                    data: {
+                        pagina: pagina,
+                        @if(strpos($_SERVER['REQUEST_URI'], 'filtrar')!==false)
+                            filtrar: filtro,
+                        @endif
+                        @if(strpos($_SERVER['REQUEST_URI'], 'genero')!==false)
+                            genero:genero,
+                        @endif
+                        @if(strpos($_SERVER['REQUEST_URI'], 'plataforma')!==false)
+                            plataforma: plataforma
+                        @endif
+                    },
                     success: function (response) {
                         const nuevosHTML = crearHTMLResultados(response);
                         $('div[id="resultados"]:last').append(nuevosHTML);
